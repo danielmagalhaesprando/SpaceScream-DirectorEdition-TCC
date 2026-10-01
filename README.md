@@ -32,7 +32,7 @@ Sobre essa base, o projeto incorpora um **AI Director**, responsável por observ
 
 ## Demonstração
 
-![Gameplay](screenshots/gameplay.png)
+![Gameplay](screenshots/gameplay-prototipo.png)
 
 ## Estado atual
 
