@@ -1,104 +1,147 @@
-# 🚀 SpaceScream
+<h1 align="center"> SpaceScream </h1>
 
-In space, no one can hear you scream.
+Protótipo de jogo *twin-stick shooter* integrado a um * **AI Director** *  para adaptação dinâmica em tempo real.
 
-An emotion-driven Asteroids game that reads your face through the webcam and mirrors your emotions on a Doom-style HUD face — all rendered with vector graphics.
+Projeto acadêmico desenvolvido como Trabalho de Conclusão de Curso em Engenharia de Computação na UTFPR.
 
-## Features
+<br>
 
-- **Classic Asteroids Gameplay** — Thrust, rotate, strafe, shoot, and survive through escalating waves of asteroids
-- **Real-Time Emotion Recognition** — Your webcam captures your face and the [FER](https://github.com/justinshenk/fer) library detects 7 emotions (happy, sad, angry, surprise, fear, disgust, neutral)
-- **HUD Emotion Face** — A vector-drawn digital face in the HUD reacts to your real emotions, Doom-style. It also flashes on damage and looks worried at low health
-- **Debug Overlay** — Toggle a real-time emotion bar chart to see exactly what the system detects
-- **Vector Graphics** — Every visual element (ship, asteroids, bullets, HUD, face) is drawn with Pygame primitives — no image assets
-- **Two-Thread Architecture** — Emotion analysis runs on a dedicated producer thread with double-buffered numpy arrays, so the game never stutters
+## Sobre o projeto
 
-## Requirements
+O SpaceScream é um jogo de ação do gênero *twin-stick shooter*, no qual o jogador se movimenta por uma arena bidimensional aberta enquanto enfrenta grupos de inimigos que o perseguem.
 
-- **Python 3.x** (tested with Anaconda 3, base environment)
-- **Webcam** (optional — game works without one, emotion features fall back to neutral)
-- OS: **Windows** (tested), should work on macOS/Linux with minor path adjustments
+A jogabilidade combina movimentação, posicionamento e combate em tempo real. Os inimigos são organizados em grupos e formações distintas, enquanto
+a partida é estruturada em *waves*.
 
-## Installation
+Sobre essa base, o projeto incorpora um **AI Director**, responsável por observar o estado da partida e do jogador e produzir intervenções adaptativas durante a execução.
+
+## Principais características
+
+- *Twin-stick shooter* com movimentação e direção de ataque independentes
+- Arena bidimensional aberta
+- Sistema de armas e ataques
+- Combate contra inimigos que perseguem o jogador
+- Organização dos inimigos em grupos e formações
+- Sistema de *waves* e períodos de *wave rest*
+- Sistema de *health drops* para recuperação de vida
+- AI Director para adaptação dinâmica em tempo real
+- Representação estruturada do estado da partida e do jogador
+- Sistema de intervenções aplicadas à *wave* atual e à próxima *wave*
+- Instrumentação e depuração do AI Director
+- Decisões lógicas do jogo e do AI Director sem uso de aleatoriedade
+
+## Demonstração
+
+![Gameplay](screenshots/gameplay.png)
+
+## Estado atual
+
+### Implementado:
+
+- Jogo base funcional
+- Controle e movimentação do jogador
+- Mira e disparo por mouse
+- Inimigos e sistema de perseguição
+- Grupos e formações de *spawn*
+- Organização das *waves*
+- Sistema de *health drops*
+- Estados de menu, partida, pausa, *wave rest* e *game over*
+- AI Director
+- Representação estruturada do contexto da partida para o AI Director
+- Sistema de adaptações e aplicação das intervenções ao jogo
+- Instrumentação e depuração do AI Director
+
+### Em desenvolvimento:
+
+- EmotionSystem
+- Reconhecimento de expressões faciais por meio de FER
+- Integração entre FER, EmotionSystem, AI Director e Game
+- Sistema de progressão baseado em seleção de habilidades durante o *wave rest*
+
+## Controles
+
+| Entrada | Ação |
+|---|---|
+| **W** | Movimentar para cima |
+| **A** | Movimentar para a esquerda |
+| **S** | Movimentar para baixo |
+| **D** | Movimentar para a direita |
+| **Mouse** | Direcionar o ataque |
+| **Botão esquerdo do mouse** | Atacar |
+| **Enter / Espaço** | Confirmar ações de menu |
+| **Esc** | Pausar a partida |
+| **F3** | Alternar o modo de depuração |
+
+## Tecnologias
+
+- Python
+- Pygame Community Edition
+
+## Dependências
+
+A execução do protótipo atual requer:
+
+- Python 3.14.7 (64 bits)
+- Pygame CE 2.5.8
+
+As dependências Python estão especificadas em [`requirements.txt`](requirements.txt).
+
+> **Observação:** os componentes FER e EmotionSystem ainda estão em desenvolvimento. As dependências necessárias para o reconhecimento de expressões faciais serão incorporadas ao projeto quando essa integração for implementada.
+
+## Execução
+
+Instale as dependências especificadas em `requirements.txt`:
 
 ```bash
-# Clone or download the project
-cd SpaceScream
-
-# Install dependencies (using Anaconda 3 base environment)
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-Dependencies: `pygame`, `opencv-python`, `fer`, `numpy`
-
-## Running the Game
+Execute a aplicação a partir da raiz do projeto:
 
 ```bash
-# Using Anaconda 3 on Windows:
-& "C:\Users\Daniel\anaconda3\python.exe" src/main.py
-
-# Or if Python is in your PATH:
-python src/main.py
+python main.py
 ```
 
-## Controls
+## Arquitetura
 
-| Key | Action |
-|-----|--------|
-| **↑** (Up Arrow) | Thrust forward |
-| **↓** (Down Arrow) | Thrust backward / brake |
-| **←** (Left Arrow) | Rotate counter-clockwise |
-| **→** (Right Arrow) | Rotate clockwise |
-| **Q** | Strafe left |
-| **E** | Strafe right |
-| **Space** | Fire bullet (hold for continuous fire, capped at 5/sec) |
-| **D** | Toggle debug emotion overlay |
-| **F10** | Toggle maximized screen |
-| **F11** | Toggle fullscreen |
-| **Escape** | Quit game |
+O projeto foi desenvolvido iterativamente, e organizado de forma modular, separando as responsabilidades relacionadas à execução do jogo, à adaptação dinâmica e à detecção e inferência emocional.
 
-## Gameplay
+O arquivo `main.py` constitui o ponto de entrada da aplicação e coordena a execução e a comunicação entre os principais componentes. O diretório `GAME` concentra a implementação da jogabilidade, enquanto `AI_DIRECTOR` contém o mecanismo de tomada de decisão adaptativa.
 
-- Destroy asteroids by shooting them. Large asteroids split into medium, medium into small, small are destroyed completely.
-- Avoid collisions — you start with **3 lives**. Getting hit costs one life and the ship respawns at center once the area is clear.
-- Each wave cleared spawns more and faster asteroids.
-- **Scoring**: Large = 20 pts, Medium = 50 pts, Small = 100 pts.
+> **Observação:** os diretórios `EMOTION_SYSTEM` e `FER` estão reservados aos componentes responsáveis pelo processamento emocional e pelo reconhecimento de expressões faciais.
 
-## Emotion System
-
-The game uses your webcam to detect facial expressions in real time:
-
-1. **Producer thread** captures webcam frames and runs FER emotion analysis (~10 Hz)
-2. Results are written to a shared **numpy array** protected by a lock (held only during the swap — microseconds)
-3. The **main game thread** reads the array each frame and drives the HUD face + debug overlay
-
-If no webcam is detected, the game starts normally with the face defaulting to neutral.  
-If FER is still loading at launch, the debug overlay shows *"Initializing camera..."* until ready.
-
-## Project Structure
-
-```
+```text
 SpaceScream/
-├── src/
-│   ├── main.py              # Entry point — game loop, input handling
-│   ├── settings.py          # Constants, colors, physics tunables
-│   ├── ship.py              # Ship — thrust, rotate, strafe, safe respawn
-│   ├── bullet.py            # Bullet — velocity, lifetime, screen wrapping
-│   ├── asteroid.py          # Asteroid — splitting with spread angle, irregular polygons
-│   ├── game.py              # Game state — collisions, waves, particles, stars
-│   ├── emotion_engine.py    # Webcam + FER producer thread, numpy shared array
-│   ├── hud.py               # HUD bar — score, wave, lives, face frame
-│   ├── hud_face.py          # Vector-drawn face with 9 emotion states
-│   └── debug_overlay.py     # D-key toggled emotion bars overlay
-├── assets/fonts/            # (Reserved — currently using Pygame defaults)
-├── specs/                   # Spec-Kit design artifacts
+├── AI_DIRECTOR/
+│   └── ai_director.py
+├── EMOTION_SYSTEM/
+├── FER/
+├── GAME/
+│   ├── attack.py
+│   ├── drop.py
+│   ├── enemy.py
+│   ├── game.py
+│   ├── particle.py
+│   ├── player.py
+│   ├── spawn.py
+│   ├── wave.py
+│   └── weapon.py
+├── icon.png
+├── main.py
 ├── requirements.txt
-├── ARCHITECTURE.md
-└── README.md
+├── README.md
+├── LICENSE
+└── .gitignore
 ```
 
-## License
+## Relação com o projeto original
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Este projeto foi inspirado pelo SpaceScream original desenvolvido por **Daniel Cavalcanti Jeronymo**, disponível em:
 
-Copyright (c) 2026 Daniel Cavalcanti Jeronymo <danielc@utfpr.edu.br>
+https://github.com/prof-danielc/SpaceScream
+
+A implementação presente neste repositório possui código, organização estrutural e arquitetura próprios. O repositório original é referenciado como fonte de inspiração para a concepção inicial do projeto.
+
+## Licença
+
+Este projeto está licenciado sob a **MIT License**. Consulte o arquivo [`LICENSE`](LICENSE) para obter os termos completos da licença.
