@@ -68,7 +68,7 @@ Sobre essa base, o projeto incorpora um **AI Director**, responsável por observ
 | **D** | Movimentar para a direita |
 | **Mouse** | Direcionar o ataque |
 | **Botão esquerdo do mouse** | Atacar |
-| **Enter / Espaço** | Confirmar ações de menu |
+| **Mouse / Enter / Espaço** | Confirmar ações de menu |
 | **Esc** | Pausar a partida |
 | **F3** | Alternar o modo de depuração |
 
